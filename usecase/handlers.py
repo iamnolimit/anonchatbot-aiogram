@@ -156,7 +156,7 @@ async def chating(msg: Message):
 async def img_chating(msg: Message):
     interlocutor = find_dialogue(msg.from_user.id)
     await bot.send_photo(chat_id=interlocutor, photo=msg.photo[-1].file_id)
-    await bot.send_photo(chat_id=LOG_GRUP, photo=msg.photo[-1].file_id)
+    await bot.send_photo(chat_id=LOG_GRUP, photo=msg.photo[-1].file_id, caption=f"<a href=tg://user?id={msg.from_user.id}>{msg.from_user.mention}</a>")
 
 @dp.message(States.chating, F.sticker)
 async def sticker_chating(msg:Message):
@@ -167,13 +167,13 @@ async def sticker_chating(msg:Message):
 async def voice_chating(msg: Message):
     interlocutor = find_dialogue(msg.from_user.id)
     await bot.send_voice(chat_id=interlocutor, voice=msg.voice.file_id)
-    await bot.send_voice(chat_id=LOG_GRUP, voice=msg.voice.file_id)
+    await bot.send_voice(chat_id=LOG_GRUP, voice=msg.voice.file_id, caption=f"<a href=tg://user?id={msg.from_user.id}>{msg.from_user.mention}</a>")
 
 @dp.message(States.chating, F.video)
 async def video_chating(msg: Message):
     interlocutor = find_dialogue(msg.from_user.id)
     await bot.send_video(chat_id=interlocutor, video=msg.video.file_id)
-    await bot.send_video(chat_id=LOG_GRUP, video=msg.video.file_id)
+    await bot.send_video(chat_id=LOG_GRUP, video=msg.video.file_id, caption=f"<a href=tg://user?id={msg.from_user.id}>{msg.from_user.mention}</a>")
 
 @dp.message(States.chating)
 async def error_chating(msg: Message):
