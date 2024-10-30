@@ -3,10 +3,11 @@ import hashlib
 
 # Redis connection configuration
 REDIS_CONFIG = {
-    'host': 'redis-nolimit-tb-nolimit-tb.b.aivencloud.com',
-    'port': 25738,
+    'host': 'redis-16032.c100.us-east-1-4.ec2.redns.redis-cloud.com',
+    'port': 16032,
+    'db': 'cache-M2WCFBEM'
     'username': 'default',
-    'password': 'AVNS_ZFKJhIlAD0fDI20-7Ov',
+    'password': 'Rn9flXWi5hd4Yd90wXQGGfUXcHzTVPSw',
     'ssl': True,
     'decode_responses': True  # This will automatically decode bytes to strings
 }
