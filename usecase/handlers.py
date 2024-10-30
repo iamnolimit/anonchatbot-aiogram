@@ -14,6 +14,11 @@ bot = Bot("7911131556:AAEGBfG5HMcfxhgtvlJQxD39FgYF_vVhZ8g")
 dp = Dispatcher()
 router = Router()
 LOG_GRUP = -4568938746
+ADMIN_IDS = [
+    1259894923,  # Replace with actual admin user IDs
+    1735180969,
+    1054295664
+]
 
 
 @dp.message(CommandStart(), StateFilter(None))
@@ -53,8 +58,13 @@ async def setage(msg:Message,state:FSMContext):
     await msg.answer(f"Data kamu berhasil disimpan.\nUsia: {age}\nJenis Kelamin: {gender}")
     await state.clear()
 
-@dp.message(Command("stats"))
+@dp.message(Command("stats"),F.chat.type == ChatType.GROUP)
 async def show_stats(message: Message):
+    # Check if user is authorized
+    if message.from_user.id not in ADMIN_IDS:
+        await message.answer("❌ Maaf, kamu tidak memiliki akses untuk menggunakan perintah ini.")
+        return
+        
     stats = await DB.get_user_stats()
     
     text = (
@@ -110,7 +120,7 @@ async def search_error(msg: Message):
 async def stop_chating(msg: Message):
     interlocutor = find_dialogue(msg.from_user.id)
     await msg.answer(text="Percakapan berakhir")
-    await bot.send_message(chat_id=interlocutor, text="Percakapan berakhir")
+    await bot.send_message(chat_id=interlocutor, text="Percakapan berakhir", reply_markup=main_menu())
     del_dialogue(msg.from_user.id, interlocutor)
     await dp.fsm.get_context(bot, user_id=interlocutor, chat_id=interlocutor).clear()
     await dp.fsm.get_context(bot, user_id=msg.from_user.id, chat_id=msg.from_user.id).clear()
@@ -168,6 +178,6 @@ async def video_chating(msg: Message):
 async def error_chating(msg: Message):
     await msg.answer("❗PERHATIAN❗\nTipe data tidak didukung, pesan tidak terkirim")
 
-@dp.message(StateFilter(None))
+@dp.message(StateFilter(None),F.chat.type == ChatType.PRIVATE)
 async def warning(msg:Message,state:FSMContext):
     await msg.answer("Kamu belum memiliki lawan bicara. Untuk memulai ketik /start atau /search")
