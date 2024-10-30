@@ -22,7 +22,6 @@ ADMIN_IDS = [
     1054295664
 ]
 
-
 @dp.message(CommandStart(), StateFilter(None))
 async def start(msg: Message, state:FSMContext):
     if await DB.check_user(msg.from_user.id):
