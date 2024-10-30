@@ -88,4 +88,11 @@ class Database:
             'age_distribution': age_dist
         }
 
+    @classmethod
+    async def get_all_users(cls) -> list:
+        """Get all user IDs from the database"""
+        async with cls.pool.acquire() as conn:
+            rows = await conn.fetch("SELECT user_id FROM users")
+            return [row['user_id'] for row in rows]
+
 DB = Database()
