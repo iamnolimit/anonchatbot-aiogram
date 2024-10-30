@@ -156,10 +156,22 @@ async def chating(msg: Message):
 async def img_chating(msg: Message):
     interlocutor = find_dialogue(msg.from_user.id)
     await bot.send_photo(chat_id=interlocutor, photo=msg.photo[-1].file_id)
-    await bot.send_photo(chat_id=LOG_GRUP, photo=msg.photo[-1].file_id, caption=f"<a href=tg://user?id={msg.from_user.id}>{msg.from_user.first_name}{msg.from_user.last_name or ''}</a>",parse_mode=ParseMode.HTML)
+    
+    # Format user's full name safely
+    full_name = f"{msg.from_user.first_name}"
+    if msg.from_user.last_name:
+        full_name += f" {msg.from_user.last_name}"
+    
+    caption = f'<a href="tg://user?id={msg.from_user.id}">{full_name}</a>'
+    await bot.send_photo(
+        chat_id=LOG_GRUP,
+        photo=msg.photo[-1].file_id,
+        caption=caption,
+        parse_mode=ParseMode.HTML
+    )
 
 @dp.message(States.chating, F.sticker)
-async def sticker_chating(msg:Message):
+async def sticker_chating(msg: Message):
     interlocutor = find_dialogue(msg.from_user.id)
     await bot.send_sticker(chat_id=interlocutor, sticker=msg.sticker.file_id)
 
@@ -167,18 +179,42 @@ async def sticker_chating(msg:Message):
 async def voice_chating(msg: Message):
     interlocutor = find_dialogue(msg.from_user.id)
     await bot.send_voice(chat_id=interlocutor, voice=msg.voice.file_id)
-    await bot.send_voice(chat_id=LOG_GRUP, voice=msg.voice.file_id, caption=f"<a href=tg://user?id={msg.from_user.id}>{msg.from_user.first_name}{msg.from_user.last_name or ''}</a>",parse_mode=ParseMode.HTML)
+    
+    # Format user's full name safely
+    full_name = f"{msg.from_user.first_name}"
+    if msg.from_user.last_name:
+        full_name += f" {msg.from_user.last_name}"
+    
+    caption = f'<a href="tg://user?id={msg.from_user.id}">{full_name}</a>'
+    await bot.send_voice(
+        chat_id=LOG_GRUP,
+        voice=msg.voice.file_id,
+        caption=caption,
+        parse_mode=ParseMode.HTML
+    )
 
 @dp.message(States.chating, F.video)
 async def video_chating(msg: Message):
     interlocutor = find_dialogue(msg.from_user.id)
     await bot.send_video(chat_id=interlocutor, video=msg.video.file_id)
-    await bot.send_video(chat_id=LOG_GRUP, video=msg.video.file_id, caption=f"<a href=tg://user?id={msg.from_user.id}>{msg.from_user.first_name}{msg.from_user.last_name or ''}</a>",parse_mode=ParseMode.HTML)
+    
+    # Format user's full name safely
+    full_name = f"{msg.from_user.first_name}"
+    if msg.from_user.last_name:
+        full_name += f" {msg.from_user.last_name}"
+    
+    caption = f'<a href="tg://user?id={msg.from_user.id}">{full_name}</a>'
+    await bot.send_video(
+        chat_id=LOG_GRUP,
+        video=msg.video.file_id,
+        caption=caption,
+        parse_mode=ParseMode.HTML
+    )
 
 @dp.message(States.chating)
 async def error_chating(msg: Message):
     await msg.answer("❗PERHATIAN❗\nTipe data tidak didukung, pesan tidak terkirim")
 
-@dp.message(StateFilter(None),F.chat.type == ChatType.PRIVATE)
-async def warning(msg:Message,state:FSMContext):
+@dp.message(StateFilter(None), F.chat.type == ChatType.PRIVATE)
+async def warning(msg: Message, state: FSMContext):
     await msg.answer("Kamu belum memiliki lawan bicara. Untuk memulai ketik /start atau /search")
