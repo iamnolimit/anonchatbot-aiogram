@@ -120,7 +120,7 @@ async def search_error(msg: Message):
 @dp.message(States.chating, lambda m: m.text == "/stop")
 async def stop_chating(msg: Message):
     interlocutor = find_dialogue(msg.from_user.id)
-    await msg.answer(text="Percakapan berakhir")
+    await msg.answer(text="Percakapan berakhir", reply_markup=main_menu())
     await bot.send_message(chat_id=interlocutor, text="Percakapan berakhir", reply_markup=main_menu())
     del_dialogue(msg.from_user.id, interlocutor)
     await dp.fsm.get_context(bot, user_id=interlocutor, chat_id=interlocutor).clear()
