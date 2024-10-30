@@ -3,10 +3,10 @@ import random
 import hashlib
 
 def add_in_queue(user_id):
-    with redis.Redis() as r:
+    with redis.Redis(host='redis-nolimit-tb-nolimit-tb.b.aivencloud.com', port=25738, username='default', password='AVNS_ZFKJhIlAD0fDI20-7Ov') as r:
         r.rpush('search_queue', user_id)
 def del_from_queue(user):
-    with redis.Redis() as r:
+    with redis.Redis(host='redis-nolimit-tb-nolimit-tb.b.aivencloud.com', port=25738, username='default', password='AVNS_ZFKJhIlAD0fDI20-7Ov') as r:
         r.lrem("search_queue",0,user)
 def get_interlocutor(user):
     with redis.Redis() as r:
@@ -16,13 +16,13 @@ def get_interlocutor(user):
         else:
             return False
 def check_queue():
-    with redis.Redis() as r:
+    with redis.Redis(host='redis-nolimit-tb-nolimit-tb.b.aivencloud.com', port=25738, username='default', password='AVNS_ZFKJhIlAD0fDI20-7Ov') as r:
         if r.llen("search_queue") >= 2:
             return True
         else:
             return False       
 def create_dialogue(user_1,user_2):
-    with redis.Redis() as r:
+    with redis.Redis(host='redis-nolimit-tb-nolimit-tb.b.aivencloud.com', port=25738, username='default', password='AVNS_ZFKJhIlAD0fDI20-7Ov') as r:
         # value = f"{user_1}{user_2}".encode()
         # hash = hashlib.sha256(value).hexdigest()
         r.hset(f"dialogues",user_1,user_2)
@@ -30,14 +30,14 @@ def create_dialogue(user_1,user_2):
         # r.hset(f"states", user_1,"chating")
         # r.hset(f"states", user_2,"chating")
 def del_dialogue(user1,user2):
-    with redis.Redis() as r:
+    with redis.Redis(host='redis-nolimit-tb-nolimit-tb.b.aivencloud.com', port=25738, username='default', password='AVNS_ZFKJhIlAD0fDI20-7Ov') as r:
         r.hdel("dialogues", user1)
         r.hdel("dialogues", user2)
 def find_dialogue(id):
-    with redis.Redis() as r:
+    with redis.Redis(host='redis-nolimit-tb-nolimit-tb.b.aivencloud.com', port=25738, username='default', password='AVNS_ZFKJhIlAD0fDI20-7Ov') as r:
         return int(r.hget("dialogues", id).decode("utf-8"))
 def check(user) -> bool:
-    with redis.Redis() as r:
+    with redis.Redis(host='redis-nolimit-tb-nolimit-tb.b.aivencloud.com', port=25738, username='default', password='AVNS_ZFKJhIlAD0fDI20-7Ov') as r:
         if r.hget("states", user):
             return True
         else:
