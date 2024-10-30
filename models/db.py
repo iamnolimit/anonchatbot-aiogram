@@ -91,10 +91,8 @@ class Database:
     @classmethod
     async def get_all_users(cls):
         """Get all user IDs from the database"""
-        connection = await cls.create_connection()
-        async with connection.cursor() as cursor:
-            await cursor.execute("SELECT user_id FROM users")
-            rows = await cursor.fetchall()
-            return [row[0] for row in rows]
+        query = "SELECT user_id FROM users"
+        result = await cls.execute(query, fetch=True)
+        return [row[0] for row in result] if result else []
 
 DB = Database()
