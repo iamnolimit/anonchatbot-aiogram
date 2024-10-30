@@ -4,11 +4,11 @@ import os
 class Database:
     async def create(self):
         self.pool = await asyncpg.create_pool(
-            database=os.getenv("DB_NAME"),
-            user=os.getenv("DB_USER"),
-            password=os.getenv("DB_PASSWORD"),
-            host=os.getenv("DB_HOST"),
-            port=os.getenv("DB_PORT")
+            database="redis-nolimit-tb",
+            user="default",
+            password="AVNS_ZFKJhIlAD0fDI20-7Ov",
+            host="redis-nolimit-tb-nolimit-tb.b.aivencloud.com",
+            port="25738"
         )
         async with self.pool.acquire() as connection:
                 async with connection.transaction():
