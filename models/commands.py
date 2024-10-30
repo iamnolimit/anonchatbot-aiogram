@@ -1,8 +1,9 @@
 from aiogram import types
+
 my_commands = [
-    types.BotCommand(command="start", description="Начать работу с ботом"),
-    types.BotCommand(command="link", description="Отправить ссылку на свой профиль"),
-    types.BotCommand(command="search", description="Найти собеседника"),
-    types.BotCommand(command="next", description="Новый собеседник"),
-    types.BotCommand(command="stop", description="Остановить диалог")
+    types.BotCommand(command="start", description="Mulai menggunakan bot"),
+    types.BotCommand(command="link", description="Kirim link profil kamu"),
+    types.BotCommand(command="search", description="Cari lawan bicara"),
+    types.BotCommand(command="next", description="Ganti lawan bicara"),
+    types.BotCommand(command="stop", description="Akhiri percakapan")
 ]
