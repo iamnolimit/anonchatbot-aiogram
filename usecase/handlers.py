@@ -9,7 +9,7 @@ from models.redis import *
 import os
 from typing import Union
 
-bot = Bot(os.getenv("BOT_TOKEN"))
+bot = Bot("7911131556:AAEGBfG5HMcfxhgtvlJQxD39FgYF_vVhZ8g")
 
 dp = Dispatcher()
 router = Router()
