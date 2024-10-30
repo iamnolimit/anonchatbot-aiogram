@@ -89,57 +89,70 @@ async def process_broadcast_confirmation(callback: types.CallbackQuery, state: F
         # Edit confirmation message to show progress
         progress_msg = await callback.message.edit_text("Memulai broadcast...")
         
-        # Get all users
-        users = await DB.get_all_users()  # You need to implement this method in your DB class
-        total_users = len(users)
-        successful = 0
-        failed = 0
-        
-        # Send messages with progress updates
-        for i, user_id in enumerate(users, 1):
-            try:
-                await bot.send_message(user_id, broadcast_text)
-                successful += 1
-            except Exception as e:
-                failed += 1
-                # Log the error to admin group
-                await bot.send_message(
-                    LOG_GRUP,
-                    f"Error broadcasting to user {user_id}: {str(e)}"
-                )
+        try:
+            # Get all users
+            users = await DB.get_all_users()
+            total_users = len(users)
+            successful = 0
+            failed = 0
             
-            # Update progress every 10 users or at the end
-            if i % 10 == 0 or i == total_users:
-                await progress_msg.edit_text(
-                    f"Broadcast dalam proses...\n"
-                    f"Progress: {i}/{total_users}\n"
-                    f"Berhasil: {successful}\n"
-                    f"Gagal: {failed}"
-                )
-                await asyncio.sleep(0.05)  # Prevent flooding
+            # Send messages with progress updates
+            for i, user_id in enumerate(users, 1):
+                try:
+                    await bot.send_message(user_id, broadcast_text)
+                    successful += 1
+                except Exception as e:
+                    failed += 1
+                    # Log the error to admin group
+                    await bot.send_message(
+                        LOG_GRUP,
+                        f"Error broadcasting to user {user_id}: {str(e)}",
+                        parse_mode=ParseMode.HTML
+                    )
+                
+                # Update progress every 10 users or at the end
+                if i % 10 == 0 or i == total_users:
+                    await progress_msg.edit_text(
+                        f"Broadcast dalam proses...\n"
+                        f"Progress: {i}/{total_users}\n"
+                        f"Berhasil: {successful}\n"
+                        f"Gagal: {failed}"
+                    )
+                    await asyncio.sleep(0.05)  # Prevent flooding
+            
+            # Final report
+            final_report = (
+                "✅ Broadcast selesai!\n\n"
+                f"Total pengguna: {total_users}\n"
+                f"Berhasil terkirim: {successful}\n"
+                f"Gagal terkirim: {failed}"
+            )
+            await progress_msg.edit_text(final_report)
+            
+            # Log the broadcast to admin group
+            await bot.send_message(
+                LOG_GRUP,
+                f"📢 Broadcast Report\n\n"
+                f"Admin: {callback.from_user.mention_html()}\n"
+                f"Pesan: {broadcast_text}\n\n"
+                f"Total pengguna: {total_users}\n"
+                f"Berhasil: {successful}\n"
+                f"Gagal: {failed}",
+                parse_mode=ParseMode.HTML
+            )
         
-        # Final report
-        final_report = (
-            "✅ Broadcast selesai!\n\n"
-            f"Total pengguna: {total_users}\n"
-            f"Berhasil terkirim: {successful}\n"
-            f"Gagal terkirim: {failed}"
-        )
-        await progress_msg.edit_text(final_report)
+        except Exception as e:
+            await progress_msg.edit_text(f"❌ Error during broadcast: {str(e)}")
+            await bot.send_message(
+                LOG_GRUP,
+                f"❌ Broadcast Error\n\n"
+                f"Admin: {callback.from_user.mention_html()}\n"
+                f"Error: {str(e)}",
+                parse_mode=ParseMode.HTML
+            )
         
-        # Log the broadcast to admin group
-        await bot.send_message(
-            LOG_GRUP,
-            f"📢 Broadcast Report\n\n"
-            f"Admin: {callback.from_user.mention_html()}\n"
-            f"Pesan: {broadcast_text}\n\n"
-            f"Total pengguna: {total_users}\n"
-            f"Berhasil: {successful}\n"
-            f"Gagal: {failed}",
-            parse_mode=ParseMode.HTML
-        )
-        
-        await state.clear()
+        finally:
+            await state.clear()
 
 @dp.callback_query(States.setgender, F.data.startswith("gender_"))
 async def setgender(cb: types.CallbackQuery,state:FSMContext):
