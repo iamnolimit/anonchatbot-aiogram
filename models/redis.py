@@ -8,8 +8,6 @@ REDIS_CONFIG = {
     'db': 'cache-M2WCFBEM',
     'username': 'default',
     'password': 'Rn9flXWi5hd4Yd90wXQGGfUXcHzTVPSw',
-    'ssl': True,
-    'decode_responses': True  # This will automatically decode bytes to strings
 }
 
 def get_redis_connection():
