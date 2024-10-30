@@ -8,7 +8,7 @@ from models.kb import *
 from models.redis import *
 import os
 from typing import Union
-from aiogram.enums import ChatType
+from aiogram.enums import ChatType, ParseMode
 
 bot = Bot("7911131556:AAEGBfG5HMcfxhgtvlJQxD39FgYF_vVhZ8g")
 
