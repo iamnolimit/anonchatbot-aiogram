@@ -6,4 +6,6 @@ class States(StatesGroup):
     setage = State()
     chating = State()
     searching = State()
+    broadcast_message = State()
+    broadcast_confirm = State()
 # STATES = States()
