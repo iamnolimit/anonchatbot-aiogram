@@ -89,10 +89,12 @@ class Database:
         }
 
     @classmethod
-    async def get_all_users(cls) -> list:
+    async def get_all_users(cls):
         """Get all user IDs from the database"""
-        async with cls.pool.acquire() as conn:
-            rows = await conn.fetch("SELECT user_id FROM users")
-            return [row['user_id'] for row in rows]
+        connection = await cls.create_connection()
+        async with connection.cursor() as cursor:
+            await cursor.execute("SELECT user_id FROM users")
+            rows = await cursor.fetchall()
+            return [row[0] for row in rows]
 
 DB = Database()
