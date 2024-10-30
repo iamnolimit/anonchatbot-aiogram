@@ -3,7 +3,8 @@ import hashlib
 
 # Redis connection configuration
 REDIS_CONFIG = {
-    'host': 'redis-16032.c100.us-east-1-4.ec2.redns.redis-cloud.com:16032',
+    'host': 'redis-16032.c100.us-east-1-4.ec2.redns.redis-cloud.com',
+    'port': '16032',
     'db': 'cache-M2WCFBEM',
     'username': 'default',
     'password': 'Rn9flXWi5hd4Yd90wXQGGfUXcHzTVPSw',
