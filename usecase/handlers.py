@@ -53,6 +53,30 @@ async def setage(msg:Message,state:FSMContext):
     await msg.answer(f"Data kamu berhasil disimpan.\nUsia: {age}\nJenis Kelamin: {gender}")
     await state.clear()
 
+@dp.message(Command("stats"))
+async def show_stats(message: Message):
+    stats = await DB.get_user_stats()
+    
+    text = (
+        f"📊 Statistik Bot\n\n"
+        f"Total Pengguna: {stats['total_users']}\n"
+        f"\n👥 Berdasarkan Gender:\n"
+        f"Laki-laki: {stats['gender_stats']['male']}\n"
+        f"Perempuan: {stats['gender_stats']['female']}\n"
+        f"\n📈 Statistik Usia:\n"
+        f"Rata-rata: {stats['age_stats']['average']}\n"
+        f"Termuda: {stats['age_stats']['youngest']}\n"
+        f"Tertua: {stats['age_stats']['oldest']}\n"
+        f"\n🔄 Distribusi Usia:\n"
+        f"<18: {stats['age_distribution']['<18']}\n"
+        f"18-25: {stats['age_distribution']['18-25']}\n"
+        f"26-35: {stats['age_distribution']['26-35']}\n"
+        f"36-50: {stats['age_distribution']['36-50']}\n"
+        f">50: {stats['age_distribution']['>50']}"
+    )
+    
+    await message.answer(text)
+
 @dp.message(F.text == "/search", StateFilter(None))
 @dp.callback_query(F.data == "search_start", StateFilter(None))
 async def search_start(query_or_message: Union[types.CallbackQuery, Message], state:FSMContext):
