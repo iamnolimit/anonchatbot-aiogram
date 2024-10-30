@@ -13,7 +13,7 @@ bot = Bot("7911131556:AAEGBfG5HMcfxhgtvlJQxD39FgYF_vVhZ8g")
 
 dp = Dispatcher()
 router = Router()
-LOG_GRUP = -1002125363162
+LOG_GRUP = -4568938746
 
 
 @dp.message(CommandStart(), StateFilter(None))
